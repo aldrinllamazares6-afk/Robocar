@@ -1,0 +1,78 @@
+int infared1 = 10;
+int infared2 = 13;
+int sensorValue1;
+int sensorValue2;
+
+void setup() {
+  pinMode(5, OUTPUT);  // LEFT GO
+  pinMode(6, OUTPUT);  // LEFT BACK
+  pinMode(4, OUTPUT);  // RIGHT GO
+  pinMode(3, OUTPUT);  // RIGHT BACK
+  pinMode(8, OUTPUT);  // ENA (PWM)
+  pinMode(9, OUTPUT);  // ENB (PWM)
+
+  pinMode(infared1, INPUT);
+  pinMode(infared2, INPUT);
+
+  Serial.begin(9600);
+  Serial.println("Robot Car Starting...");
+  delay(2000);
+}
+
+void loop() {
+
+  sensorValue1 = digitalRead(infared1);
+  sensorValue2 = digitalRead(infared2);
+
+  Serial.print("LEFT: ");
+  Serial.print(sensorValue1);
+  Serial.print(" | RIGHT: ");
+  Serial.println(sensorValue2);
+
+
+  if (sensorValue1 == 0 && sensorValue2 == 0) {
+    Serial.println("Moving Forward...");
+    digitalWrite(5, HIGH);  
+    digitalWrite(6, LOW);   
+    analogWrite(8, 150);
+
+    digitalWrite(4, HIGH);  
+    digitalWrite(3, LOW);   
+    analogWrite(9, 150);
+  }
+
+
+  else if (sensorValue1 == 1 && sensorValue2 == 1) {
+    Serial.println("Moving Backward...");
+    digitalWrite(5, LOW);   
+    digitalWrite(6, HIGH);  
+    analogWrite(8, 150);
+
+    digitalWrite(4, LOW);   
+    digitalWrite(3, HIGH);  
+    analogWrite(9, 150);
+  }
+
+ 
+  else if (sensorValue1 == 0 && sensorValue2 == 1) {
+    Serial.println("Turning Left...");
+    digitalWrite(5, LOW);    
+    digitalWrite(6, HIGH);   
+    analogWrite(8, 180);
+
+    digitalWrite(4, HIGH);   
+    digitalWrite(3, LOW);    
+    analogWrite(9, 200);
+  }
+
+  else if (sensorValue1 == 1 && sensorValue2 == 0) {
+    Serial.println("Turning Right...");
+    digitalWrite(5, HIGH);   
+    digitalWrite(6, LOW);    
+    analogWrite(8, 200);
+
+    digitalWrite(4, LOW);    
+    digitalWrite(3, HIGH);   
+    analogWrite(9, 180);
+  }
+}
